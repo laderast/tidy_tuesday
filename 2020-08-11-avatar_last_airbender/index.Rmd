@@ -106,7 +106,7 @@ sentiment_index <- sentiment_summary %>%
 
 ```{r}
 out_plot <- ggplot(sentiment_index) +
-  aes(x=index, y=sentiment, fill=character, episode=chapter) +
+  aes(x=index, y=sentiment, fill=character, episode=chapter, book = book_num, episode_number=chapter_num) +
   geom_col(show_legend = FALSE) +
   facet_wrap(~character, ncol=2) +
   labs(title= "Each Character's Sentiment Journey", x="Episode Number",
@@ -127,7 +127,7 @@ zuko <- sentiment_index %>%
   filter(character=="Zuko")
 
 out_plot <- ggplot(zuko) +
-  aes(x=index, y=sentiment, fill=character, episode=chapter) +
+  aes(x=index, y=sentiment, fill=character, episode=chapter, book = book_num, episode_number=chapter_num) +
   geom_col(show_legend = FALSE) +
   facet_wrap(~character, ncol=2) +
   annotate(geom="text", x=27, y= -8 , label = "Zuko Alone\nA Turning Point") +
@@ -152,7 +152,7 @@ zuko_aang <- sentiment_index %>%
   filter(character %in% c("Zuko", "Aang"))
 
 out_plot <- ggplot(zuko_aang) +
-  aes(x=index, y=sentiment, fill=character, episode=chapter) +
+  aes(x=index, y=sentiment, fill=character, episode=chapter, book = book_num, episode_number=chapter_num) +
   geom_col(show_legend = FALSE, alpha=0.7) +
   labs(title= "Aang and Zuko's Journeys Often Mirror Each Other", 
        x="Episode Number",
@@ -174,7 +174,7 @@ iroh <- sentiment_index %>%
   filter(character=="Iroh")
 
 out_plot <- ggplot(iroh) +
-  aes(x=index, y=sentiment, fill=character, episode=chapter) +
+  aes(x=index, y=sentiment, fill=character, episode=chapter, book = book_num, episode_number=chapter_num) +
   geom_col(show_legend = FALSE) +
   labs(title= "Iroh is just so chill and positive", x="Episode Number",
        subtitle = "mouse over for more episode information") +
