@@ -67,7 +67,6 @@ line_count <- avatar_words %>%
   count(character) %>%
   arrange(desc(n)) 
 
-
 line_count[1:20,] %>%
   gt::gt()
 ```
@@ -118,6 +117,8 @@ plotly::ggplotly(out_plot)
 
 # Zuko has the most interesting journey
 
+Zuko has many ups and downs, which may reflect his overall lack of confidence and his tendency for self-loathing.
+
 ```{r}
 zuko <- sentiment_index %>%
   filter(character=="Zuko")
@@ -126,8 +127,49 @@ out_plot <- ggplot(zuko) +
   aes(x=index, y=sentiment, fill=character, episode=chapter) +
   geom_col(show_legend = FALSE) +
   facet_wrap(~character, ncol=2) +
+  annotate(geom="text", x=27, y= -8 , label = "Zuko Alone\nA Turning Point") +
+  annotate(geom="text", x=53, y = 11, label = "Where Zuko\ntrains Aang") +
   labs(title= "Zuko has lots of ups and downs", x="Episode Number",
-       subtitle = "mouse over for more episode information")
+       subtitle = "mouse over for more episode information") +
+  ylim(c(-13, 13))
+
+plotly::ggplotly(out_plot)
+```
+
+
+## Aang and Zuko's Journeys
+
+Plotting the sentiment journey of Zuko and Aang together.
+
+```{r}
+zuko_aang <- sentiment_index %>%
+  filter(character %in% c("Zuko", "Aang"))
+
+out_plot <- ggplot(zuko_aang) +
+  aes(x=index, y=sentiment, fill=character, episode=chapter) +
+  geom_col(show_legend = FALSE, alpha=0.7) +
+  labs(title= "Aang and Zuko's Journeys Often Mirror Each Other", 
+       x="Episode Number",
+       subtitle = "mouse over for more episode information") +
+  ylim(c(-13, 13))
+
+plotly::ggplotly(out_plot)
+
+
+```
+
+# Iroh is so chill and positive
+
+```{r}
+iroh <- sentiment_index %>%
+  filter(character=="Iroh")
+
+out_plot <- ggplot(iroh) +
+  aes(x=index, y=sentiment, fill=character, episode=chapter) +
+  geom_col(show_legend = FALSE) +
+  labs(title= "Iroh is just so chill and positive", x="Episode Number",
+       subtitle = "mouse over for more episode information") +
+  ylim(c(-13, 13))
 
 plotly::ggplotly(out_plot)
 ```
