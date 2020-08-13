@@ -57,6 +57,41 @@ avatar_words <- avatar %>%
 avatar_words[1:10,]
 ```
 
+# Characters by Episode/Chapter
+
+```{r}
+episode_count <- avatar %>%
+  count(character, chapter) %>%
+  select(character, chapter) %>%
+  filter(character != "Scene Description") %>%
+  distinct() %>%
+  count(character) %>%
+  arrange(desc(n))
+
+episode_count %>% 
+  DT::datatable()
+```
+
+# Bit Players
+
+```{r}
+episode_count %>%
+  filter(n == 1) %>%
+  arrange(character)
+```
+
+
+# Cabbage merchant
+
+The cabbage merchant appears in 4 episodes, and you can see his path to resignation as Aang and company keep busting up his cabbage kiosk.
+
+```{r}
+avatar %>%
+  filter(character == "Cabbage merchant") %>%
+  select(chapter, character_words) %>%
+  gt::gt()
+```
+
 # Who Spoke the Most?
 
 Surprisingly, Sokka has the most lines.
@@ -68,6 +103,7 @@ line_count <- avatar_words %>%
 
 line_count[1:20,] %>%
   gt::gt()
+
 ```
 
 
@@ -118,6 +154,22 @@ plotly::ggplotly(out_plot)
 
 ```
 
+# Sentiment Heatmap
+
+```{r}
+
+s_index <- sentiment_index %>%
+  tidyr::complete(chapter_num, character)
+
+ggplot(s_index) +
+  aes(x=index, y=character, fill=sentiment) +
+geom_tile() +
+  scale_fill_viridis_b(na.value="black") 
+  
+
+```
+
+
 # Zuko has the most interesting journey
 
 Zuko has many ups and downs, which may reflect his overall lack of confidence and his tendency for self-loathing.
@@ -127,7 +179,7 @@ zuko <- sentiment_index %>%
   filter(character=="Zuko")
 
 out_plot <- ggplot(zuko) +
-  aes(x=index, y=sentiment, fill=character, episode=chapter, book = book_num, episode_number=chapter_num) +
+  aes(x=index, y=sentiment, fill=character, episode=chapter, book = book_num, group=character, episode_number=chapter_num) +
   geom_col(show_legend = FALSE) +
   facet_wrap(~character, ncol=2) +
   annotate(geom="text", x=27, y= -8 , label = "Zuko Alone\nA Turning Point") +
